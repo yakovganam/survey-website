@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>סקר בחירות 2026 | הכנסת ה-26</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Hero Header -->
+  <header class="hero-header">
+    <div class="hero-container">
+      <div class="hero-badge">🗳️ בחירות 2026</div>
+      <h1 class="hero-title">סקר בחירות לכנסת ה-26</h1>
+      <p class="hero-subtitle">למי היית מצביע/ה אם הבחירות היו מתקיימות היום?</p>
+      <div class="hero-actions">
+        <button id="start-survey-btn" class="btn-primary">התחל סקר עכשיו</button>
+        <a href="results.html" class="btn-secondary">תוצאות בזמן אמת 📊</a>
+      </div>
+    </div>
+    <div class="hero-gradient"></div>
+  </header>
+
+  <!-- About Section -->
+  <main class="main-content">
+    <div class="container">
+      <section class="info-section">
+        <h2 class="section-title">מהן הבחירות לכנסת ה-26?</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">🗳️</div>
+            <h3>מערכת בחירות דמוקרטית</h3>
+            <p>הכנסת ה-26 תהיה הפרלמנט הישראלי הבא. 120 חברי כנסת ייבחרו לייצג את האזרחים.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📊</div>
+            <h3>אחוז חסימה 3.25%</h3>
+            <p>מפלגות צריכות לעבור את אחוז החסימה כדי להיכנס לכנסת ולקבל מנדטים.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">⚖️</div>
+            <h3>חישוב מנדטים</h3>
+            <p>חלוקת המנדטים מתבצעת לפי שיטת השאריות הגדולות (Hare quota).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Survey Form (Hidden Initially) -->
+      <section id="survey-section" class="survey-section" style="display: none;">
+        <div class="survey-card">
+          <div class="survey-header">
+            <button id="back-btn" class="btn-back">← חזרה</button>
+            <h2>השלימו את הסקר</h2>
+          </div>
+          <div id="survey-form"></div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="features-section">
+        <h2 class="section-title">למה להשתתף בסקר?</h2>
+        <div class="features-grid">
+          <div class="feature-item">
+            <span class="feature-emoji">⚡</span>
+            <h4>תוצאות מיידיות</h4>
+            <p>צפו בתוצאות בזמן אמת עם ויזואליזציה מתקדמת</p>
+          </div>
+          <div class="feature-item">
+            <span class="feature-emoji">🔒</span>
+            <h4>אנונימיות מלאה</h4>
+            <p>הסקר אנונימי לחלוטין ואינו שומר מידע אישי</p>
+          </div>
+          <div class="feature-item">
+            <span class="feature-emoji">📱</span>
+            <h4>ממשק נוח</h4>
+            <p>עיצוב מודרני ונוח לשימוש ממכשיר כלשהו</p>
+          </div>
+          <div class="feature-item">
+            <span class="feature-emoji">🎯</span>
+            <h4>דיוק גבוה</h4>
+            <p>חישוב מדויק של מנדטים לפי החוק הישראלי</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>סקר בחירות 2026</h4>
+          <p>מערכת סקרים מתקדמת לבחירות הכנסת ה-26</p>
+        </div>
+        <div class="footer-section">
+          <h4>קישורים</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">דף הבית</a></li>
+            <li><a href="results.html">תוצאות</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>מידע</h4>
+          <p class="footer-note">סקר לא רשמי למטרות מחקר וסטטיסטיקה בלבד</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small>© 2026 סקר בחירות ישראל · כל הזכויות שמורות</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
