@@ -104,6 +104,49 @@ app.post('/api/surveys/:id/responses', ensureDbConnected, async (req, res) => {
   }
 });
 
+app.get('/api/surveys/:id/results', ensureDbConnected, async (req, res) => {
+  try {
+    const survey = await Survey.findById(req.params.id);
+    if (!survey) return res.status(404).json({ error: 'Survey not found' });
+
+    const totalResponses = survey.responses.length;
+    const results = survey.questions.map((q, qIndex) => {
+      const stats = {
+        question: q.question,
+        type: q.type,
+        total: totalResponses,
+        data: {}
+      };
+
+      if (q.type === 'multiple' || q.type === 'yesno') {
+        const counts = {};
+        const options = q.type === 'yesno' ? ['Yes', 'No'] : q.options;
+        options.forEach(opt => counts[opt] = 0);
+
+        survey.responses.forEach(resp => {
+          const answer = resp.answers[qIndex];
+          if (answer && counts.hasOwnProperty(answer)) {
+            counts[answer]++;
+          }
+        });
+        stats.data = counts;
+      } else if (q.type === 'text') {
+        stats.data = survey.responses.map(resp => resp.answers[qIndex]).filter(Boolean);
+      }
+
+      return stats;
+    });
+
+    res.json({
+      title: survey.title,
+      totalResponses,
+      results
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // For deployment, serve static frontend from project root
 app.use(express.static(require('path').join(__dirname, '..')));
 
