@@ -4,19 +4,43 @@ const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/surveydb';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('CRITICAL ERROR: MONGODB_URI environment variable is not set.');
+}
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB (Atlas-ready)
-mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err.message);
-  });
+// Enhanced Connection Logic with Reconnection and Monitoring
+const connectWithRetry = () => {
+  console.log('Attempting MongoDB connection...');
+  mongoose
+    .connect(MONGODB_URI, { 
+      useNewUrlParser: true, 
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 30s
+    })
+    .then(() => {
+      console.log('✅ Connected to MongoDB');
+    })
+    .catch((err) => {
+      console.error('❌ MongoDB connection error:', err.message);
+      console.log('Retrying in 5 seconds...');
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+if (MONGODB_URI) {
+  connectWithRetry();
+}
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️ MongoDB disconnected. Attempting to reconnect...');
+  connectWithRetry();
+});
 
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB runtime error:', err.message);
@@ -24,10 +48,15 @@ mongoose.connection.on('error', (err) => {
 
 // Helpful healthcheck
 app.get('/api/health', (req, res) => {
-  const state = mongoose.connection.readyState; // 0=disconnected,1=connected,2=connecting,3=disconnecting
+  const state = mongoose.connection.readyState; 
+  // 0=disconnected, 1=connected, 2=connecting, 3=disconnecting
+  const states = ['disconnected', 'connected', 'connecting', 'disconnecting'];
   res.json({
     status: state === 1 ? 'ok' : 'db_unavailable',
     mongoState: state,
+    mongoStatus: states[state] || 'unknown',
+    uriSet: !!MONGODB_URI,
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -57,7 +86,8 @@ function ensureDbConnected(req, res, next) {
   if (mongoose.connection.readyState !== 1) {
     return res.status(503).json({
       error: 'מסד הנתונים אינו זמין כרגע. וודא שמונגו-דיבי פעיל או שה-MONGODB_URI נכון.',
-      hint: 'לשימוש מקומי: התקן והפעל MongoDB, או ספק MONGODB_URI עבור MongoDB Atlas.',
+      hint: 'Render environment variables check: Ensure MONGODB_URI is set in Dashboard.',
+      db_state: mongoose.connection.readyState
     });
   }
   next();
@@ -79,7 +109,7 @@ app.get('/api/surveys/:id', ensureDbConnected, async (req, res) => {
     if (!survey) return res.status(404).json({ error: 'Survey not found' });
     res.json(survey);
   } catch (err) {
-    res.status(400).json({ error: 'Invalid survey id' });
+    res.status(400).json({ error: 'Invalid survey id or error: ' + err.message });
   }
 });
 
@@ -152,5 +182,6 @@ app.use(express.static(require('path').join(__dirname, '..')));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`MongoDB URI: ${MONGODB_URI.includes('mongodb://localhost') ? 'local' : 'external/Atlas'}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`MongoDB URI status: ${MONGODB_URI ? 'Defined' : 'UNDEFINED'}`);
 });
