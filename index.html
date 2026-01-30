@@ -3,29 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>סקר בחירות 2026 | הכנסת ה-26</title>
+  <meta name="description" content="סקר בחירות אנונימי וآمن לכנסת ה-26 עם תוצאות בזמן אמת וחישוב מנדטים מדויק">
+  <title>סקר בחירות 2026 | הכנסת ה-26 🗳️</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --primary-color: #667eea;
+      --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent: #10b981;
+    }
+  </style>
 </head>
 <body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle">
+    <button id="theme-btn" class="theme-btn" title="החלף ערכת צבעים">🌙</button>
+  </div>
   <!-- Hero Header -->
-  <header class="hero-header">
+  <header class="hero-header animated-gradient">
     <div class="hero-container">
-      <div class="hero-badge">🗳️ בחירות 2026</div>
-      <h1 class="hero-title">סקר בחירות לכנסת ה-26</h1>
-      <p class="hero-subtitle">למי היית מצביע/ה אם הבחירות היו מתקיימות היום?</p>
-      <p class="hero-description">סקר אנונימי אמין לבדיקת נטיות בחירה. תוצאות בזמן אמת וחישוב מנדטים מדויק.</p>
-      <div class="hero-actions">
-        <button id="start-survey-btn" class="btn-primary btn-primary-large">
-          <span class="btn-icon">→</span>
+      <div class="hero-badge fade-in">🗳️ בחירות 2026 | הכנסת ה-26</div>
+      <h1 class="hero-title fade-in-up">סקר בחירות אנונימי וממוקד</h1>
+      <p class="hero-subtitle fade-in-up" style="animation-delay: 0.2s;">למי היית מצביע/ה אם הבחירות היו מתקיימות היום?</p>
+      <p class="hero-description fade-in-up" style="animation-delay: 0.4s;">סקר מתקדם עם תוצאות בזמן אמת, חישוב מנדטים דיוק 100%, ואבטחה מלאה של הפרטיות.</p>
+      <div class="hero-actions fade-in-up" style="animation-delay: 0.6s;">
+        <button id="start-survey-btn" class="btn-primary btn-primary-large pulse-button">
+          <span class="btn-icon">✨</span>
           התחל סקר עכשיו
+          <span class="btn-shine"></span>
         </button>
-        <a href="results.html" class="btn-secondary">תוצאות בזמן אמת 📊</a>
+        <a href="results.html" class="btn-secondary">תוצאות לייב 📊</a>
+      </div>
+      <div class="hero-stats fade-in-up" style="animation-delay: 0.8s;">
+        <div class="stat">
+          <span class="stat-number" id="total-votes">0</span>
+          <span class="stat-label">משתתפים</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">15</span>
+          <span class="stat-label">מפלגות</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">דיוק חישוב</span>
+        </div>
       </div>
     </div>
     <div class="hero-gradient"></div>
+    <canvas id="background-canvas" class="background-animation"></canvas>
   </header>
 
   <!-- About Section -->
